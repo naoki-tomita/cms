@@ -1,0 +1,19 @@
+{
+  "name": "core",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^13.9.8",
+    "@types/pg": "^7.14.3",
+    "omusubi": "^0.0.4",
+    "pg": "^8.0.0",
+    "sql-query-factory": "^1.1.8",
+    "summer-framework": "^0.2.0",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "start": "ts-node index.ts"
+  }
+}

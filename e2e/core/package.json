@@ -1,0 +1,23 @@
+{
+  "name": "gauge-ts-template",
+  "version": "0.0.1",
+  "description": "Starter template for writing TypeScript tests for Gauge",
+  "dependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/csv2json": "^1.4.1",
+    "@types/node-fetch": "^2.5.5",
+    "@types/pg": "^7.14.3",
+    "chai": "^4.2.0",
+    "csv2json": "^2.0.2",
+    "gauge-ts": "0.0.5",
+    "node-fetch": "^2.6.0",
+    "omusubi": "^0.0.4",
+    "pg": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "latest"
+  },
+  "scripts": {
+    "test": "gauge"
+  }
+}

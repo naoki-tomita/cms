@@ -1,0 +1,20 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime-corejs2": "^7.9.2",
+    "babel-polyfill": "^6.26.0",
+    "parcel": "^1.12.4",
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@vue/component-compiler-utils": "^3.1.2",
+    "sass": "^1.26.3",
+    "vue-template-compiler": "^2.6.11"
+  }
+}
