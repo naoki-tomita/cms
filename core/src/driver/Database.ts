@@ -1,4 +1,4 @@
-import { Client } from "pg";
+import { Client, QueryResult } from "pg";
 
 export class Database {
   client: Client;
@@ -16,11 +16,16 @@ export class Database {
     await this.client.connect();
   }
 
-  async exec<T>(buildable: { build(): string }) {
-    return await this.client.query<T>(buildable.build());
+  async exec<T>(buildable: { build(): string }): Promise<QueryResult<T>>;
+  async exec<T>(query: string): Promise<QueryResult<T>>;
+  async exec<T>(param: { build(): string } | string): Promise<QueryResult<T>> {
+    if (typeof param === "string") {
+      return await this.execQuery(param);
+    }
+    return await this.client.query<T>(param.build());
   }
 
-  async execQuery<T>(query: string) {
+  private async execQuery<T>(query: string) {
     return await this.client.query<T>(query);
   }
 }

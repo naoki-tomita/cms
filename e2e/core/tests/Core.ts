@@ -4,10 +4,18 @@ import { equal, deepEqual, ok } from "assert";
 import fetch from "node-fetch";
 import { parse } from "./CSV";
 import { Database } from "./DB";
-import { expect } from "chai";
+import { expect } from "./Assert";
 
 async function readFileAsync(path: string) {
   return new Promise<string>((ok, ng) => readFile(path, (err, data) => err ? ng(err) : ok(data.toString())));
+}
+
+async function readFileAsObject(path: string) {
+  return JSON.parse(await readFileAsync(path))
+}
+
+async function readCsvAsListObject(path: string) {
+  return parse(await readFileAsync(path));
 }
 
 function setStatus(status: number) {
@@ -31,38 +39,47 @@ export default class Core {
   @BeforeSuite()
   async setup() {
     await new Database().run(exec => exec("delete from tenant"))
+    await new Database().insertAll("tenant", await readFileAsync("resources/tenant/setup/tenant.csv"));
   }
 
   @Step("テナント登録リクエスト<testCase>をPOSTする")
-  public async registerTenant(testCase: string) {
-    const body = await readFileAsync(`resources/tenant/${testCase}/setup/postTenantRequest.json`);
-    const response = await fetch(`${"http://localhost:8000"}/v1/tenants`, {
+  async registerTenant(testCase: string) {
+    const body = await readFileAsync(`resources/tenant/${testCase}/request/postTenantRequest.json`);
+    const response = await fetch(`${"http://localhost:8081"}/v1/tenants`, {
       method: "POST", headers: { "content-type": "application/json" }, body,
     });
     setStatus(response.status);
     setBody(await response.json());
   }
 
+  @Step("テナント取得リクエストを行う")
+  async getTenants() {
+    const response = await fetch(`${"http://localhost:8081"}/v1/tenants`);
+    setStatus(response.status);
+    setBody(await response.json());
+  }
+
   @Step("ステータスコードが<code>でレスポンスされる")
-  public async verifyStatusCode(code: string) {
+  async verifyStatusCode(code: string) {
     equal(status(), parseInt(code, 10));
   }
 
-  @Step("テナント登録リクエストのレスポンスボディが<testCase>と一致する")
-  public async verifyTenantRegisterResponse(testCase: string) {
-    const body = await readFileAsync(`resources/tenant/${testCase}/expected/postTenantResponse.json`);
-    this.verifyBody(JSON.parse(body));
+  @Step("レスポンスボディの一部が<testCase>と一致する")
+  async verifyLooseResponseBody(testCase: string) {
+    const json = await readFileAsObject(`resources/${testCase}/expected/response.json`);
+    expect(body()).lazy.deepEquals(json);
   }
 
-  public async verifyBody(json: any) {
-    expect(body()).to.include(json);
+  @Step("レスポンスボディの配列に<testCase>の配列を含む")
+  async verifyIncludesArray(testCase: string) {
+    const json = await readFileAsObject(`resources/${testCase}/expected/response.json`);
+    expect(body()).includes.items(json)
   }
 
-  @Step("テナント情報<testCase>がDBに登録されている")
-  public async verifyTenantRegister(testCase: string) {
-    const csv = await readFileAsync(`resources/tenant/${testCase}/expected/db/tenant.csv`);
-    const items = parse(csv);
-    const results = await new Database().run(exec => exec("select * from tenant"));
+  @Step("DBの<table>テーブルに<testCase>のデータセットが登録されている")
+  async verifyDatabaseLoosy(table: string, testCase: string) {
+    const items = await readCsvAsListObject(`resources/${testCase}/expected/db/${table}.csv`);
+    const results = await new Database().run(exec => exec(`select * from ${table}`));
     arrayIncludesLooseItems(results, items);
   }
 }

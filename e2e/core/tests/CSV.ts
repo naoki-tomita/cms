@@ -17,6 +17,7 @@ export function parse(text: string): {[key: string]: boolean | number | string |
     .match(/"[^"]*"|[^,]+/g);
   return text.trim()
     .split("\n").slice(1)
+    .map(it => it.trim())
     .map(it => it.match(/"[^"]*"|[^,]+/g))
     .map(it => it.reduce((prev, next, i) => ({ ...prev, [keys[i]]: toValue(next) }), {}));
 }

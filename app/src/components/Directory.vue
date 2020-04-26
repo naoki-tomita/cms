@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul v-for="directory in directories">
+    <ul v-for="directory in directories" :key="directory.id">
       <li>
         {{ directory.name }}
         <button @click="directory.open = !directory.open">{{ directory.open ? "close" : "open" }}</button>
