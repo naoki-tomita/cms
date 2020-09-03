@@ -4,7 +4,7 @@ import { equal, deepEqual, ok } from "assert";
 import fetch from "node-fetch";
 import { parse } from "./CSV";
 import { Database } from "./DB";
-import { expect } from "./Assert";
+import { expect } from "object-assertion";
 
 async function readFileAsync(path: string) {
   return new Promise<string>((ok, ng) => readFile(path, (err, data) => err ? ng(err) : ok(data.toString())));

@@ -926,6 +926,11 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
+object-assertion@^0.0.1-wip-1:
+  version "0.0.1-wip-1"
+  resolved "https://registry.yarnpkg.com/object-assertion/-/object-assertion-0.0.1-wip-1.tgz#e961c9ac24205d78573125006f328e71cc4c2f3b"
+  integrity sha512-FYcFOcFhHr7MfUy7wHCGjHurC5Z8AsKFIL5ETnRyWJqcUndbK5TL+ZbiM7d+4xnwY2MO64ashBtemMmrjwFJzA==
+
 object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
